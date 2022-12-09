@@ -4,6 +4,11 @@ SF6 Start & SF6 Master
 This repository is for training purposes.
 See the Pull Request section for each steps of the SFPack training.
 
+# Requirements
+* [symfony](https://symfony.com/download) `>=5.4`
+* PHP `>=8.1`
+  * `pdo_sqlite`
+
 # Install
 ```shell
 $ git clone git@github.com:Neirda24/sensio_sfpack_202212.git --branch main
