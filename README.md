@@ -14,6 +14,7 @@ See the Pull Request section for each steps of the SFPack training.
 $ git clone git@github.com:Neirda24/sensio_sfpack_202212.git --branch main
 $ cd ./sensio_sfpack_202212/
 $ symfony composer install
+$ symfony serve -d
 ```
 
 # How was it generated ?
