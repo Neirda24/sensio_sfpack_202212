@@ -25,3 +25,4 @@ $ symfony serve -d
 
 SFStart
 * [01 - Controllers](./doc/01-sfstart/01-controllers.md)
+* [01 - Tests](./doc/01-sfstart/02-tests.md)
