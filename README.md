@@ -20,3 +20,8 @@ $ symfony serve -d
 # How was it generated ?
 
 [![asciicast](https://asciinema.org/a/ggiYi4uWbVl1XyRklxosCzP44.svg)](https://asciinema.org/a/ggiYi4uWbVl1XyRklxosCzP44)
+
+# Exercices
+
+SFStart
+* [01 - Controllers](./doc/01-sfstart/01-controllers.md)
