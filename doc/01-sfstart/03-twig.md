@@ -14,3 +14,8 @@ $ symfony console make:controller # HomeController (list movies)
 $ symfony composer require twig/intl-extra # In order to use the `|format_date('full')` twig filter
 $ symfony console make:controller # MovieController (see movie details)
 ```
+
+Exercise 04 - Make the navbar dynamic
+=====================================
+
+1. Update the navbar to create links to each movie details.
