@@ -6,6 +6,7 @@ use App\Form\MovieType;
 use App\ReadModel\Movie;
 use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,12 +21,18 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/add', name: 'movie_add', methods: ['GET', 'POST'])]
-    public function add(): Response
+    public function add(Request $request, MovieRepository $movieRepository): Response
     {
         $form = $this->createForm(MovieType::class);
 
-        return $this->render('movie/add.html.twig', [
-            'form' => $form,
-        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $movieRepository->save($form->getData(), true);
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('movie/add.html.twig', ['form' => $form]);
     }
 }
