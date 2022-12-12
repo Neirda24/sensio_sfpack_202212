@@ -2,6 +2,7 @@
 
 namespace App\ReadModel;
 
+use App\Entity\Genre as GenreEntity;
 use App\Entity\Movie as MovieEntity;
 use DateTimeImmutable;
 use function array_map;
@@ -12,6 +13,7 @@ class Movie
      * @param array<int, string> $genres
      */
     public function __construct(
+        public readonly string            $slug,
         public readonly string            $title,
         public readonly DateTimeImmutable $releasedAt,
         public readonly array             $genres,
@@ -32,9 +34,10 @@ class Movie
     public static function fromEntity(MovieEntity $movieEntity): self
     {
         return new self(
+            $movieEntity->getSlug(),
             $movieEntity->getTitle(),
             $movieEntity->getReleasedAt(),
-            [],
+            array_map(static fn (GenreEntity $genre): string => $genre->getName(), $movieEntity->getGenres()->toArray()),
             $movieEntity->getPoster(),
         );
     }

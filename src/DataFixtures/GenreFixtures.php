@@ -8,16 +8,22 @@ use Doctrine\Persistence\ObjectManager;
 
 class GenreFixtures extends Fixture
 {
+    private const GENRES = [
+        'Action',
+        'Adventure',
+        'Comedy',
+        'Documentary',
+        'Fantasy',
+        'Family',
+    ];
+
     public function load(ObjectManager $manager): void
     {
-        $action = (new Genre())->setName('Action');
-        $manager->persist($action);
-
-        $action = (new Genre())->setName('Adventure');
-        $manager->persist($action);
-
-        $action = (new Genre())->setName('Fantasy');
-        $manager->persist($action);
+        foreach (self::GENRES as $genreName) {
+            $genre = (new Genre())->setName($genreName);
+            $manager->persist($genre);
+            $this->addReference("genre.{$genreName}", $genre);
+        }
 
         $manager->flush();
     }

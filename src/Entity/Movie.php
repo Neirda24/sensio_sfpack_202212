@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\MovieRepository;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,7 +27,15 @@ class Movie
     private ?string $poster = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-    private ?\DateTimeImmutable $releasedAt = null;
+    private ?DateTimeImmutable $releasedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Genre::class)]
+    private Collection $genres;
+
+    public function __construct()
+    {
+        $this->genres = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -67,14 +78,38 @@ class Movie
         return $this;
     }
 
-    public function getReleasedAt(): ?\DateTimeImmutable
+    public function getReleasedAt(): ?DateTimeImmutable
     {
         return $this->releasedAt;
     }
 
-    public function setReleasedAt(\DateTimeImmutable $releasedAt): self
+    public function setReleasedAt(DateTimeImmutable $releasedAt): self
     {
         $this->releasedAt = $releasedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Genre>
+     */
+    public function getGenres(): Collection
+    {
+        return $this->genres;
+    }
+
+    public function addGenre(Genre $genre): self
+    {
+        if (!$this->genres->contains($genre)) {
+            $this->genres->add($genre);
+        }
+
+        return $this;
+    }
+
+    public function removeGenre(Genre $genre): self
+    {
+        $this->genres->removeElement($genre);
 
         return $this;
     }

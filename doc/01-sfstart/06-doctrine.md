@@ -40,7 +40,7 @@ See the movie entity creation :
 Exercise 08 - Fetch from the database
 =====================================
 
-1. Create fixtues for your database.
+1. Create fixtures for your database.
 2. Update your navbar to retrieve movies from your database.
 3. Update your "movie_details" page to retrieve movies from your database.
 
@@ -50,3 +50,22 @@ Exercise 08 - Fetch from the database
 $ symfony composer require orm-fixtures --dev
 $ symfony console doctrine:fixtures:load
 ```
+
+Exercise 09 - Create entities relationships
+===========================================
+
+1. Create a ManyToMany relationship between movie and genre entities.
+2. Generate and run a new migration
+
+
+# Steps
+
+```shell
+$ symfony console make:entity # On movie to generate the Genres relationship
+$ symfony console doctrine:migration:diff
+$ symfony console doctrine:migration:migrate
+$ symfony console doctrine:fixtures:load
+```
+
+See the relation creation :
+[![asciicast](https://asciinema.org/a/D060sfhxHStQ14xZ7J3OP8bBn.svg)](https://asciinema.org/a/D060sfhxHStQ14xZ7J3OP8bBn)
