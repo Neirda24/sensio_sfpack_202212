@@ -13,11 +13,13 @@ class Movies
             'title'      => 'Avatar',
             'releasedAt' => '16/12/2009',
             'genres'     => ['Action', 'Adventure', 'Fantasy'],
+            'poster'     => '/avatar.jpg',
         ],
         'asterix-et-obelix-mission-cleopatre' => [
             'title'      => 'Astérix et Obélix : Mission Cléopâtre',
             'releasedAt' => '30/01/2002',
             'genres'     => ['Documentary', 'Adventure', 'Comedy', 'Family'],
+            'poster'     => '/mission-cleopatre.jpg',
         ],
     ];
 
@@ -37,6 +39,7 @@ class Movies
             $movieDetails['title'],
             DateTimeImmutable::createFromFormat('d/m/Y', $movieDetails['releasedAt']),
             $movieDetails['genres'],
+            $movieDetails['poster'],
         );
     }
 }

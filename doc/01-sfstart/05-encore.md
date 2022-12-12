@@ -10,5 +10,7 @@ Exercise 05 - Using Webpack Encore
 ```shell
 $ symfony composer require encore
 $ yarn install
+$ yarn add bootstrap @popperjs/core --dev
+$ yarn add file-loader@^6.0.0 --dev
 $ yarn encore dev # Or `yarn dev` (see "packages.json"::scripts at the root of this project)
 ```
