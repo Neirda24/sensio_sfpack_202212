@@ -29,3 +29,7 @@ SFStart
 * [03 - Twig / Create a template](./doc/01-sfstart/03-twig.md#exercise-03---create-a-template)
 * [04 - Twig / Make the navbar dynamic](./doc/01-sfstart/03-twig.md#exercise-04---make-the-navbar-dynamic)
 * [05 - Webpack Encore](./doc/01-sfstart/05-encore.md)
+* [06 - Configure Doctrine](./doc/01-sfstart/06-doctrine.md#exercise-06---configure-doctrine)
+* [07 - New Entities with doctrine](./doc/01-sfstart/06-doctrine.md#exercise-07---new-entities)
+* [08 - Fetch from the database with doctrine](./doc/01-sfstart/06-doctrine.md#exercise-08---fetch-from-the-database)
+* [09 - Leverage the entities relationships](./doc/01-sfstart/06-doctrine.md#exercise-09---create-entities-relationships)
