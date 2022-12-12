@@ -15,13 +15,13 @@ Exercise 07 - New entities
 ==========================
 
 1. Create new entities:
-   * Movie
-     * slug: string(255)
-     * title: string(255)
-     * poster: string(255)
-     * releasedAt: datetimetz_immutable
-   * Genre
-     * name: string(255)
+    * Movie
+        * slug: string(255)
+        * title: string(255)
+        * poster: string(255)
+        * releasedAt: datetimetz_immutable
+    * Genre
+        * name: string(255)
 2. Generate a new migration.
 3. Store both tables in your database.
 
@@ -36,3 +36,17 @@ $ symfony console doctrine:migration:migrate
 
 See the movie entity creation :
 [![asciicast](https://asciinema.org/a/IghXb5Fh3iKbKgsZMrVqLXYBF.svg)](https://asciinema.org/a/IghXb5Fh3iKbKgsZMrVqLXYBF)
+
+Exercise 08 - Fetch from the database
+=====================================
+
+1. Create fixtues for your database.
+2. Update your navbar to retrieve movies from your database.
+3. Update your "movie_details" page to retrieve movies from your database.
+
+# Steps
+
+```shell
+$ symfony composer require orm-fixtures --dev
+$ symfony console doctrine:fixtures:load
+```

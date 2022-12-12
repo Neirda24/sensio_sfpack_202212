@@ -31,3 +31,4 @@ SFStart
 * [05 - Webpack Encore](./doc/01-sfstart/05-encore.md)
 * [06 - Configure Doctrine](./doc/01-sfstart/06-doctrine.md#exercise-06---configure-doctrine)
 * [07 - New Entities with doctrine](./doc/01-sfstart/06-doctrine.md#exercise-07---new-entities)
+* [08 - Fetch from the database with doctrine](./doc/01-sfstart/06-doctrine.md#exercise-08---fetch-from-the-database)
