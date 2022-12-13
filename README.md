@@ -26,4 +26,6 @@ $ symfony serve -d
 SFStart
 * [01 - Controllers](./doc/01-sfstart/01-controllers.md)
 * [02 - Tests](./doc/01-sfstart/02-tests.md)
-* [03 - Twig](./doc/01-sfstart/03-twig.md)
+* [03 - Twig / Create a template](./doc/01-sfstart/03-twig.md#exercise-03---create-a-template)
+* [04 - Twig / Make the navbar dynamic](./doc/01-sfstart/03-twig.md#exercise-04---make-the-navbar-dynamic)
+* [05 - Webpack Encore](./doc/01-sfstart/05-encore.md)
