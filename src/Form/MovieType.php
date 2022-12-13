@@ -17,6 +17,7 @@ class MovieType extends AbstractType
         $builder
             ->add('slug')
             ->add('title')
+            ->add('rated')
             ->add('poster')
             ->add('releasedAt', DateType::class, [
                 'widget' => 'single_text',

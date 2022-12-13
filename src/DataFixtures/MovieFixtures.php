@@ -41,7 +41,9 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
                 ->setTitle($movieDetails['title'])
                 ->setSlug($movieSlug)
                 ->setPoster($movieDetails['poster'])
-                ->setReleasedAt(DateTimeImmutable::createFromFormat('d/m/Y', $movieDetails['releasedAt']));
+                ->setReleasedAt(DateTimeImmutable::createFromFormat('d/m/Y', $movieDetails['releasedAt']))
+                ->setRated($movieDetails['rated'])
+            ;
 
             foreach ($movieDetails['genres'] as $genreName) {
                 $movie->addGenre($this->getReference("genre.{$genreName}"));
