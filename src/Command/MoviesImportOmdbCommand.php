@@ -101,12 +101,15 @@ class MoviesImportOmdbCommand extends Command
         $manager = $this->registry->getManagerForClass(MovieEntity::class);
         $manager->flush();
 
-        $io->table(
-            ['Id in database', 'Title', 'Rated'],
-            array_map(
-                static fn (MovieEntity $movieEntity): array => [$movieEntity->getId(), $movieEntity->getTitle(), 'N/A']
-            , $addedMovies),
-        );
+        if ([] !== $addedMovies) {
+            $io->table(
+                ['Id in database', 'Title', 'Rated'],
+                array_map(
+                    static fn(MovieEntity $movieEntity): array => [$movieEntity->getId(), $movieEntity->getTitle(), $movieEntity->getRated()],
+                    $addedMovies,
+                ),
+            );
+        }
 
         if ([] !== $failedMovies) {
             $io->error('The following movies have failed to be inserted :');

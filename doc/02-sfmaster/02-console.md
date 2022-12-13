@@ -11,6 +11,17 @@ Create a new command to perform a data import for OMDB API into our database.
 # Steps
 
 1. Update your Movie entity to have a "rated" field (for the MPAA restriction)
+
+```shell
+$ symfony console make:entity # On entity Movie to add a new field "rated" that can be nullable in database.
+$ symfony console doctrine:migration:diff
+$ symfony console doctrine:migration:migrate
+```
+
 2. Create the command `app:movies:import:omdb` with `symfony console make:command`
     * The command will accept an array
     * The argument can be either the ID or a title.
+
+Example of how to use the newly created command :
+
+[![asciicast](https://asciinema.org/a/mczcnrAg91cCL6fxWAioOxRYt.svg)](https://asciinema.org/a/mczcnrAg91cCL6fxWAioOxRYt)

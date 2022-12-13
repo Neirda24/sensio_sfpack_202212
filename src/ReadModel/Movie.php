@@ -90,7 +90,7 @@ class Movie
             new DateTimeImmutable($omdbApiResponse['Released']),
             explode(', ', $omdbApiResponse['Genre']),
             $omdbApiResponse['Poster'],
-            $omdbApiResponse['Rated'],
+            ('N/A' === $omdbApiResponse['Rated']) ? null : $omdbApiResponse['Rated'],
         );
     }
 }
