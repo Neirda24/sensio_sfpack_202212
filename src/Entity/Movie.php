@@ -43,6 +43,10 @@ class Movie
     #[Assert\Count(min: 1)]
     private Collection $genres;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Choice(choices: ['PG', 'PG-13', 'R', 'NC-17'])]
+    private ?string $rated = null;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
@@ -121,6 +125,18 @@ class Movie
     public function removeGenre(Genre $genre): self
     {
         $this->genres->removeElement($genre);
+
+        return $this;
+    }
+
+    public function getRated(): ?string
+    {
+        return $this->rated;
+    }
+
+    public function setRated(?string $rated): self
+    {
+        $this->rated = $rated;
 
         return $this;
     }
