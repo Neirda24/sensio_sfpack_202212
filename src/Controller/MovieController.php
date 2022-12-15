@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie as MovieEntity;
 use App\Form\MovieType;
-use App\Omdb\ApiConsumer;
+use App\Omdb\ApiConsumerInterface;
 use App\ReadModel\Movie;
 use App\Repository\MovieRepository;
 use Doctrine\ORM\NoResultException;
@@ -17,21 +18,22 @@ use Throwable;
 class MovieController extends AbstractController
 {
     public function __construct(
-        private readonly ApiConsumer $apiConsumer,
-        private readonly SluggerInterface $slugger,
+        private readonly ApiConsumerInterface $apiConsumer,
+        private readonly SluggerInterface     $slugger,
+        private readonly MovieRepository      $movieRepository,
     ) {
     }
 
     #[Route('/movies/{slug<[a-zA-Z0-9-]+>}', name: 'movie_details', methods: ['GET'], priority: -100)]
-    public function details(MovieRepository $movieRepository, string $slug): Response
+    public function details(string $slug): Response
     {
         try {
-            $movie = Movie::fromEntity($movieRepository->fetchOneBySlug($slug));
+            $movie = Movie::fromEntity($this->movieRepository->fetchOneBySlug($slug));
         } catch (NoResultException) {
             try {
                 $movie = Movie::fromOmdbApi($this->apiConsumer->getById($slug), $this->slugger);
-            } catch (Throwable) {
-                throw $this->createNotFoundException("Could not find the movie slug or OMDB ID : '{$slug}'");
+            } catch (Throwable $throwable) {
+                throw $this->createNotFoundException("Could not find the movie slug or OMDB ID : '{$slug}'", $throwable);
             }
         }
 
@@ -41,18 +43,39 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/add', name: 'movie_add', methods: ['GET', 'POST'])]
-    public function add(Request $request, MovieRepository $movieRepository): Response
+    #[Route('/movies/{slug<[a-zA-Z0-9-]+>}/edit', name: 'movie_edit', methods: ['GET', 'POST'])]
+    public function add(Request $request, ?string $slug): Response
     {
-        $form = $this->createForm(MovieType::class);
+        $movie = new MovieEntity();
+
+        if (null !== $slug) {
+            $movie = $this->movieRepository->fetchOneBySlug($slug);
+        }
+
+        $form = $this->createForm(MovieType::class, $movie);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $movieRepository->save($form->getData(), true);
+            $this->movieRepository->save($movie, true);
 
             return $this->redirectToRoute('app_home');
         }
 
         return $this->render('movie/add.html.twig', ['form' => $form]);
+    }
+
+    #[Route('/movies/{slug<[a-zA-Z0-9-]+>}/delete', name: 'movie_delete', methods: ['GET'])]
+    public function delete(string $slug): Response
+    {
+        try {
+            $movie = $this->movieRepository->fetchOneBySlug($slug);
+        } catch (NoResultException) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $this->movieRepository->remove($movie, true);
+
+        return $this->redirectToRoute('app_home');
     }
 }
