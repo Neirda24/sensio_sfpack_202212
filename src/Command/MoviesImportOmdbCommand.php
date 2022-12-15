@@ -23,7 +23,7 @@ use function sprintf;
 
 #[AsCommand(
     name: 'app:movies:import:omdb',
-    description: 'Add a short description for your command',
+    description: 'Import one or more movies from the OMDB Api into your database.',
 )]
 class MoviesImportOmdbCommand extends Command
 {
