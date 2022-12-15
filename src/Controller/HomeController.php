@@ -10,11 +10,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    public function __construct(
+        private readonly MovieRepository $movieRepository,
+    ) {
+    }
+
     #[Route('/', name: 'app_home', methods: ['GET'])]
-    public function index(MovieRepository $movieRepository): Response
+    public function index(): Response
     {
         return $this->render('home/index.html.twig', [
-            'movies' => Movie::fromEntities($movieRepository->findAll()),
+            'movies' => Movie::fromEntities($this->movieRepository->findAll()),
         ]);
     }
 }

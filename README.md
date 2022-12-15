@@ -34,4 +34,7 @@ SFStart
 * [08 - Fetch from the database with doctrine](./doc/01-sfstart/06-doctrine.md#exercise-08---fetch-from-the-database)
 * [09 - Leverage the entities relationships](./doc/01-sfstart/06-doctrine.md#exercise-09---create-entities-relationships)
 * [10 - Forms](./doc/01-sfstart/10-forms.md#exercise-10---create-and-display-a-form)
-* [10 - Form validation](./doc/01-sfstart/10-forms.md#exercise-11---add-validation-to-the-form)
+* [11 - Form validation](./doc/01-sfstart/10-forms.md#exercise-11---add-validation-to-the-form)
+
+SFMaster
+* [01 - Services](./doc/02-sfmaster/01-services.md#exercise-01---create-an-omdb-client)
