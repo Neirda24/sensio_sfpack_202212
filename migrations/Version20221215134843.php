@@ -14,7 +14,7 @@ final class Version20221215134843 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return '[Movie] Make slug unique in database.';
     }
 
     public function up(Schema $schema): void
