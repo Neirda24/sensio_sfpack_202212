@@ -3,11 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -54,6 +56,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
 
         $this->save($user, true);
+    }
+
+    public function updateLastLogIn(User $user, DateTimeImmutable $lastLogIn): void
+    {
+        $qb = $this->createQueryBuilder('user');
+
+        $qb
+            ->update()
+            ->set('user.lastLoggedInAt', ':lastLogIn')
+            ->where($qb->expr()->eq('user', ':user'))
+            ->setParameter('lastLogIn', $lastLogIn)
+            ->setParameter('user', $user)
+        ;
+
+        $qb->getQuery()->execute();
     }
 
 //    /**
