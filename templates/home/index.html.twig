@@ -12,7 +12,7 @@
                         <p class="lead text-muted">Not finding the movie you'd like ? Just add it !</p>
                     {% else %}
                         <h1 class="fw-light">You must log in as an admin to create a new movie</h1>
-                        {% if is_granted('ROLE_USER') %}
+                        {% if is_granted('IS_AUTHENTICATED') %}
                             <p class="lead text-muted">Try clicking below you'll be redirected to the <span style="color: red;">unauthorized page</span>.</p>
                         {% else %}
                             <p class="lead text-muted">Try clicking below you'll be redirected to the login page because this is a secured access.</p>

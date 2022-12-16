@@ -47,7 +47,7 @@ class MovieController extends AbstractController
     }
 
     #[Route('/admin/movies/add', name: 'movie_add', methods: ['GET', 'POST'])]
-    #[Route('/movies/{slug<[a-zA-Z0-9-]+>}/edit', name: 'movie_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/movies/{slug<[a-zA-Z0-9-]+>}/edit', name: 'movie_edit', methods: ['GET', 'POST'])]
     public function add(Request $request, ?string $slug): Response
     {
         $movie = new MovieEntity();
