@@ -43,9 +43,9 @@ class MoviesImportOmdbCommand extends Command
             ->addArgument('id-or-title', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Can either be an ID or a title.')
             ->setHelp(<<<EOT
             The <info>%command.name%</info> import movies data from OMDB api to database:
-            <info>php %command.full_name% movie1-title movie2-title</info>
-            <info>php %command.full_name% movie1-id movie2-id</info>
-            <info>php %command.full_name% movie1-id movie2-title</info>
+            <info>php %command.full_name% "movie1-title" "movie2-title"</info>
+            <info>php %command.full_name% id1 id2</info>
+            <info>php %command.full_name% id1 "movie2-title"</info>
             EOT,
             );
     }
@@ -74,10 +74,16 @@ class MoviesImportOmdbCommand extends Command
                 }
 
                 if ($input->isInteractive() === true) {
-                    $movie = Movie::fromOmdbApi($this->omdbApiConsumer->getById($io->choice(
+                    $choices = array_column($searchResults, 'Title', 'imdbID');
+
+                    $choice = $io->choice(
                         'Which title do you want to import ?',
-                        array_column($searchResults, 'Title', 'imdbID'),
-                    )), $this->slugger);
+                        $choices,
+                    );
+
+                    $movie = Movie::fromOmdbApi($this->omdbApiConsumer->getById($choice), $this->slugger);
+                } else {
+                    $movie = Movie::fromOmdbApi($this->omdbApiConsumer->getById($searchResults[0]['imdbID']), $this->slugger);
                 }
             }
 
@@ -92,7 +98,7 @@ class MoviesImportOmdbCommand extends Command
                 $movieEntity->addGenre($this->genreRepository->getOrCreate($genre));
             }
 
-            $this->movieRepository->save($movieEntity);
+            $this->movieRepository->save($movieEntity, false);
             $addedMovies[] = $movieEntity;
 
             $io->success("'{$movieEntity->getTitle()}' as been added !");
