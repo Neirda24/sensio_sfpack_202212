@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie as MovieEntity;
+use App\Event\UnderagedMovieAccess;
 use App\Form\MovieType;
 use App\Omdb\ApiConsumerInterface;
 use App\ReadModel\Movie;
@@ -10,9 +11,11 @@ use App\Repository\MovieRepository;
 use App\Security\Voter\MovieVoter;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Throwable;
@@ -20,9 +23,10 @@ use Throwable;
 class MovieController extends AbstractController
 {
     public function __construct(
-        private readonly ApiConsumerInterface $apiConsumer,
-        private readonly SluggerInterface     $slugger,
-        private readonly MovieRepository      $movieRepository,
+        private readonly ApiConsumerInterface     $apiConsumer,
+        private readonly SluggerInterface         $slugger,
+        private readonly MovieRepository          $movieRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -39,7 +43,12 @@ class MovieController extends AbstractController
             }
         }
 
-        $this->denyAccessUnlessGranted(MovieVoter::VIEW_DETAILS, $movie);
+        try {
+            $this->denyAccessUnlessGranted(MovieVoter::VIEW_DETAILS, $movie);
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->eventDispatcher->dispatch(new UnderagedMovieAccess($movie, $this->getUser()));
+            throw $accessDeniedException;
+        }
 
         return $this->render('movie/index.html.twig', [
             'movie' => $movie,
