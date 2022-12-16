@@ -60,17 +60,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function updateLastLogIn(User $user, DateTimeImmutable $lastLogIn): void
     {
-        $qb = $this->createQueryBuilder('user');
-
-        $qb
-            ->update()
-            ->set('user.lastLoggedInAt', ':lastLogIn')
-            ->where($qb->expr()->eq('user', ':user'))
-            ->setParameter('lastLogIn', $lastLogIn)
-            ->setParameter('user', $user)
-        ;
-
-        $qb->getQuery()->execute();
+        $user->setLastLoggedInAt($lastLogIn);
+        $this->save($user, true);
     }
 
 //    /**

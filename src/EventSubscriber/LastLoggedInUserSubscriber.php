@@ -17,7 +17,10 @@ class LastLoggedInUserSubscriber implements EventSubscriberInterface
 
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
-        $this->userRepository->updateLastLogIn($event->getAuthenticationToken()->getUser(), $this->clock->now());
+        $this->userRepository->updateLastLogIn(
+            $event->getAuthenticationToken()->getUser(),
+            $this->clock->now()
+        );
     }
 
     public static function getSubscribedEvents(): array
