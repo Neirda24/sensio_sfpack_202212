@@ -38,3 +38,4 @@ SFStart
 
 SFMaster
 * [01 - Services](./doc/02-sfmaster/01-services.md#exercise-01---create-an-omdb-client)
+* [02 - Console](./doc/02-sfmaster/02-console.md#exercise-01---create-an-import-command)
