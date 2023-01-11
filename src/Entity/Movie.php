@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MovieRepository;
+use App\Validator\Constraint\NotIn;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,12 +25,13 @@ class Movie
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
+    #[Assert\Length(min: 3, max: 255)]
+    #[NotIn(list: ['add'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
+    #[Assert\Length(min: 3, max: 255)]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
