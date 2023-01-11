@@ -9,10 +9,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NavBarController extends AbstractController
 {
-    public function index(MovieRepository $movieRepository, ?string $currentMovieSlug = null): Response
+    public function __construct(
+        private readonly MovieRepository $movieRepository,
+    ) {
+    }
+
+    public function index(?string $currentMovieSlug = null): Response
     {
         return $this->render('navbar.html.twig', [
-            'movies'             => Movie::fromEntities($movieRepository->findAll()),
+            'movies'             => Movie::fromEntities($this->movieRepository->findAll()),
             'current_movie_slug' => $currentMovieSlug,
         ]);
     }
