@@ -40,4 +40,27 @@ class ApiConsumer implements ApiConsumerInterface
             throw new LogicException('Not found');
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function searchByName(string $name): array
+    {
+        $response = $this->omdbApiClient->request('GET', '/', [
+            'query' => [
+                'type'   => 'movie',
+                'r'      => 'json',
+                'page'   => '1',
+                's'      => $name,
+            ],
+        ]);
+
+        $response = $response->toArray();
+
+        if ('False' === $response['Response']) {
+            return [];
+        }
+
+        return $response['Search'];
+    }
 }

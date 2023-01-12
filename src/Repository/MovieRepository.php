@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Movie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -49,6 +50,17 @@ class MovieRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getSingleResult();
+    }
+
+    public function movieSlugExists(string $slug): bool
+    {
+        try {
+            $this->fetchOneBySlug($slug);
+        } catch (NoResultException) {
+            return false;
+        }
+
+        return true;
     }
 
 //    /**

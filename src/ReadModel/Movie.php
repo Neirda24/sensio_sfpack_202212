@@ -22,6 +22,7 @@ class Movie
         public readonly DateTimeImmutable $releasedAt,
         public readonly array             $genres,
         public readonly string            $poster,
+        public readonly ?string           $rated,
     ) {
     }
 
@@ -48,6 +49,7 @@ class Movie
             $movieEntity->getReleasedAt(),
             array_map(static fn(GenreEntity $genre): string => $genre->getName(), $movieEntity->getGenres()->toArray()),
             $movieEntity->getPoster(),
+            $movieEntity->getRated(),
         );
     }
 
@@ -88,6 +90,7 @@ class Movie
             new DateTimeImmutable($omdbApiResponse['Released']),
             explode(', ', $omdbApiResponse['Genre']),
             $omdbApiResponse['Poster'],
+            ('N/A' === $omdbApiResponse['Rated']) ? null : $omdbApiResponse['Rated'],
         );
     }
 }

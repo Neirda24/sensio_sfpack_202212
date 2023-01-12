@@ -9,11 +9,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[UniqueEntity('slug')]
+#[UniqueConstraint(name: 'movie_slug', columns: ['slug'])]
 class Movie
 {
     #[ORM\Id]
@@ -44,6 +46,10 @@ class Movie
     #[ORM\ManyToMany(targetEntity: Genre::class)]
     #[Assert\Count(min: 1)]
     private Collection $genres;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Choice(choices: ['PG', 'PG-13', 'R', 'NC-17'])]
+    private ?string $rated = null;
 
     public function __construct()
     {
@@ -123,6 +129,18 @@ class Movie
     public function removeGenre(Genre $genre): self
     {
         $this->genres->removeElement($genre);
+
+        return $this;
+    }
+
+    public function getRated(): ?string
+    {
+        return $this->rated;
+    }
+
+    public function setRated(?string $rated): self
+    {
+        $this->rated = $rated;
 
         return $this;
     }

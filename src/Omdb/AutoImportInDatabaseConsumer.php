@@ -19,13 +19,20 @@ class AutoImportInDatabaseConsumer implements ApiConsumerInterface
         private readonly MovieRepository      $movieRepository,
         private readonly GenreRepository      $genreRepository,
         private readonly SluggerInterface     $slugger,
+        private readonly AutoImportConfig     $autoImportConfig,
     ) {
     }
+
 
     public function getById(string $imdbId): array
     {
         $result = $this->apiConsumer->getById($imdbId);
-        $slug   = $this->slugger->slug($result['Title']);
+
+        if (false === $this->autoImportConfig->getValue()) {
+            return $result;
+        }
+
+        $slug = $this->slugger->slug($result['Title']);
 
         try {
             $this->movieRepository->fetchOneBySlug($slug);
@@ -44,5 +51,10 @@ class AutoImportInDatabaseConsumer implements ApiConsumerInterface
         }
 
         return $result;
+    }
+
+    public function searchByName(string $name): array
+    {
+        return $this->apiConsumer->searchByName($name);
     }
 }
