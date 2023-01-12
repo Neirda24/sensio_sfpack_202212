@@ -40,7 +40,7 @@ class MovieVoter extends Voter
             return false;
         }
 
-        return $user->isOlderThan(
+        return $user->isOlderThanOrEqual(
             $minAgeRequired,
             $this->clock->now(),
         );
