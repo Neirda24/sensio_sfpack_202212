@@ -14,7 +14,7 @@ final class Version20221213181711 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return '[User] Add date of birth column.';
     }
 
     public function up(Schema $schema): void

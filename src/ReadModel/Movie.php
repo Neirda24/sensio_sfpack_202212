@@ -14,11 +14,11 @@ use function str_starts_with;
 class Movie
 {
     private const MIN_AGES = [
-        '_default' => 0,
-        'PG'       => 13,
-        'PG-13'    => 13,
-        'R'        => 17,
-        'NC-17'    => 17,
+        MovieEntity::RATED_GENERAL_AUDIENCES           => 0,
+        MovieEntity::RATED_PARENTAL_GUIDANCE_SUGGESTED => 13,
+        MovieEntity::RATED_PARENTS_STRONGLY_CAUTIONED  => 13,
+        MovieEntity::RATED_RESTRICTED                  => 17,
+        MovieEntity::RATED_ADULTS_ONLY                 => 17,
     ];
 
     /**
@@ -41,7 +41,7 @@ class Movie
 
     public function getMinAgeBasedOnRating(): int
     {
-        return self::MIN_AGES[$this->rated ?? '_default'];
+        return self::MIN_AGES[$this->rated ?? MovieEntity::RATED_GENERAL_AUDIENCES];
     }
 
     /**
