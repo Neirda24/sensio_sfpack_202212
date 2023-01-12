@@ -42,7 +42,7 @@ class ApiConsumer implements ApiConsumerInterface
     }
 
     /**
-     * @return array<int, array{Title: string, Year: string, imdbID: string, Type: string, Poster: string}>
+     * {@inheritDoc}
      */
     public function searchByName(string $name): array
     {

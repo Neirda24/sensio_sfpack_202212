@@ -36,4 +36,9 @@ interface ApiConsumerInterface
      * }
      */
     public function getById(string $imdbId): array;
+
+    /**
+     * @return array<int, array{Title: string, Year: string, imdbID: string, Type: string, Poster: string}>
+     */
+    public function searchByName(string $name): array;
 }

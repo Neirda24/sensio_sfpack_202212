@@ -4,9 +4,11 @@ namespace App\Command;
 
 use App\Entity\Movie as MovieEntity;
 use App\Omdb\ApiConsumer;
+use App\Omdb\AutoImportConfig;
 use App\ReadModel\Movie;
 use App\Repository\GenreRepository;
 use App\Repository\MovieRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -29,6 +31,7 @@ class MoviesImportOmdbCommand extends Command
 {
     public function __construct(
         private readonly ApiConsumer      $omdbApiConsumer,
+        private readonly AutoImportConfig $autoImportConfig,
         private readonly MovieRepository  $movieRepository,
         private readonly GenreRepository  $genreRepository,
         private readonly SluggerInterface $slugger,
@@ -53,6 +56,10 @@ class MoviesImportOmdbCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+
+        $io->info('Deactivating the auto import in database.');
+
+        $this->autoImportConfig->skip();
 
         $idOrTitleList = $input->getArgument('id-or-title');
 
@@ -87,6 +94,12 @@ class MoviesImportOmdbCommand extends Command
                 }
             }
 
+            if ($this->movieRepository->movieSlugExists($movie->slug) === true) {
+                $io->info("'{$movie->title}' already imported !");
+
+                continue;
+            }
+
             $movieEntity = new MovieEntity();
             $movieEntity->setTitle($movie->title);
             $movieEntity->setPoster($movie->poster);
@@ -101,7 +114,7 @@ class MoviesImportOmdbCommand extends Command
             $this->movieRepository->save($movieEntity, false);
             $addedMovies[] = $movieEntity;
 
-            $io->success("'{$movieEntity->getTitle()}' as been added !");
+            $io->success("'{$movieEntity->getTitle()}' has been added !");
         }
 
         $manager = $this->registry->getManagerForClass(MovieEntity::class);
@@ -121,6 +134,10 @@ class MoviesImportOmdbCommand extends Command
             $io->error('The following movies have failed to be inserted :');
             $io->listing($failedMovies);
         }
+
+        $io->info('Restoring the auto import in database feature to default.');
+
+        $this->autoImportConfig->restore();
 
         return Command::SUCCESS;
     }
