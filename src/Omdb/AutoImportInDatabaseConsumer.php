@@ -52,4 +52,9 @@ class AutoImportInDatabaseConsumer implements ApiConsumerInterface
 
         return $result;
     }
+
+    public function searchByName(string $name): array
+    {
+        return $this->apiConsumer->searchByName($name);
+    }
 }
