@@ -1,4 +1,4 @@
-Exercise 01 - Create an import command
+Exercise 02 - Create an import command
 ======================================
 Create a new command to perform a data import for OMDB API into our database.
 

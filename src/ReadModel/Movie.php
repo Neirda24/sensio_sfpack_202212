@@ -13,6 +13,14 @@ use function str_starts_with;
 
 class Movie
 {
+    private const MIN_AGES = [
+        MovieEntity::RATED_GENERAL_AUDIENCES           => 0,
+        MovieEntity::RATED_PARENTAL_GUIDANCE_SUGGESTED => 13,
+        MovieEntity::RATED_PARENTS_STRONGLY_CAUTIONED  => 13,
+        MovieEntity::RATED_RESTRICTED                  => 17,
+        MovieEntity::RATED_ADULTS_ONLY                 => 17,
+    ];
+
     /**
      * @param array<int, string> $genres
      */
@@ -29,6 +37,11 @@ class Movie
     public function isRemotePoster(): bool
     {
         return str_starts_with($this->poster, 'http');
+    }
+
+    public function getMinAgeBasedOnRating(): int
+    {
+        return self::MIN_AGES[$this->rated ?? MovieEntity::RATED_GENERAL_AUDIENCES];
     }
 
     /**

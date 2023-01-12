@@ -6,7 +6,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
                     {% if current_movie_slug is null %}
                         <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
@@ -24,6 +24,13 @@
                     </li>
                 {% endfor %}
             </ul>
+            <div class="d-flex">
+                {% if app.user %}
+                <span>{{ app.user.userIdentifier }}</span>
+                <a class="btn btn-outline-success" href="{{ path('app_logout') }}">Logout</a>
+                {% endif %}
+                <a class="btn btn-outline-success" href="{{ path('app_login') }}">Login</a>
+            </div>
         </div>
     </div>
 </nav>

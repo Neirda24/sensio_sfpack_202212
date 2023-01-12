@@ -18,6 +18,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueConstraint(name: 'movie_slug', columns: ['slug'])]
 class Movie
 {
+    public const RATED_LIST = [
+        self::RATED_GENERAL_AUDIENCES,
+        self::RATED_PARENTAL_GUIDANCE_SUGGESTED,
+        self::RATED_PARENTS_STRONGLY_CAUTIONED,
+        self::RATED_RESTRICTED,
+        self::RATED_ADULTS_ONLY,
+    ];
+
+    public const RATED_GENERAL_AUDIENCES = 'G';
+
+    public const RATED_PARENTAL_GUIDANCE_SUGGESTED = 'PG';
+
+    public const RATED_PARENTS_STRONGLY_CAUTIONED = 'PG-13';
+
+    public const RATED_RESTRICTED = 'R';
+
+    public const RATED_ADULTS_ONLY = 'NC-17';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -48,7 +66,7 @@ class Movie
     private Collection $genres;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Choice(choices: ['PG', 'PG-13', 'R', 'NC-17'])]
+    #[Assert\Choice(choices: self::RATED_LIST)]
     private ?string $rated = null;
 
     public function __construct()

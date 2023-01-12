@@ -7,11 +7,13 @@ use App\Form\MovieType;
 use App\Omdb\ApiConsumerInterface;
 use App\ReadModel\Movie;
 use App\Repository\MovieRepository;
+use App\Security\Voter\MovieVoter;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Throwable;
 
@@ -37,19 +39,23 @@ class MovieController extends AbstractController
             }
         }
 
+        $this->denyAccessUnlessGranted(MovieVoter::VIEW_DETAILS, $movie);
+
         return $this->render('movie/index.html.twig', [
             'movie' => $movie,
         ]);
     }
 
-    #[Route('/movies/add', name: 'movie_add', methods: ['GET', 'POST'])]
-    #[Route('/movies/{slug<[a-zA-Z0-9-]+>}/edit', name: 'movie_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/movies/add', name: 'movie_add', methods: ['GET', 'POST'])]
+    #[Route('/admin/movies/{slug<[a-zA-Z0-9-]+>}/edit', name: 'movie_edit', methods: ['GET', 'POST'])]
     public function add(Request $request, ?string $slug): Response
     {
         $movie = new MovieEntity();
+        $editingMovieTitle = false;
 
         if (null !== $slug) {
             $movie = $this->movieRepository->fetchOneBySlug($slug);
+            $editingMovieTitle = $movie->getTitle();
         }
 
         $form = $this->createForm(MovieType::class, $movie);
@@ -62,10 +68,11 @@ class MovieController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('movie/add.html.twig', ['form' => $form]);
+        return $this->render('movie/add.html.twig', ['form' => $form, 'editingMovieTitle' => $editingMovieTitle]);
     }
 
     #[Route('/movies/{slug<[a-zA-Z0-9-]+>}/delete', name: 'movie_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(string $slug): Response
     {
         try {
