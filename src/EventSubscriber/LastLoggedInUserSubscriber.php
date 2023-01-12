@@ -5,7 +5,7 @@ namespace App\EventSubscriber;
 use App\Repository\UserRepository;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 
 class LastLoggedInUserSubscriber implements EventSubscriberInterface
 {
@@ -15,18 +15,18 @@ class LastLoggedInUserSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
+    public function onAuthenticationSuccess(LoginSuccessEvent $event): void
     {
         $this->userRepository->updateLastLogIn(
-            $event->getAuthenticationToken()->getUser(),
-            $this->clock->now()
+            $event->getAuthenticatedToken()->getUser(),
+            $this->clock->now(),
         );
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            AuthenticationSuccessEvent::class => [
+            LoginSuccessEvent::class => [
                 ['onAuthenticationSuccess'],
             ],
         ];

@@ -18,7 +18,7 @@ class UserAccessSubscriber implements EventSubscriberInterface
     {
         $adminList = $this->userRepository->listAdmins();
 
-        dump($adminList);
+        dump($event, $adminList);
     }
 
     public static function getSubscribedEvents(): array
