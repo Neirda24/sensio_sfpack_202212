@@ -60,9 +60,11 @@ class MovieController extends AbstractController
     public function add(Request $request, ?string $slug): Response
     {
         $movie = new MovieEntity();
+        $editingMovieTitle = false;
 
         if (null !== $slug) {
             $movie = $this->movieRepository->fetchOneBySlug($slug);
+            $editingMovieTitle = $movie->getTitle();
         }
 
         $form = $this->createForm(MovieType::class, $movie);
@@ -75,7 +77,7 @@ class MovieController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('movie/add.html.twig', ['form' => $form]);
+        return $this->render('movie/add.html.twig', ['form' => $form, 'editingMovieTitle' => $editingMovieTitle]);
     }
 
     #[Route('/movies/{slug<[a-zA-Z0-9-]+>}/delete', name: 'movie_delete', methods: ['GET'])]
